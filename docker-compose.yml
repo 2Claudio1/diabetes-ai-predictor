@@ -1,32 +1,35 @@
-version: '3.8'
+version: "3.9"
 
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user           # Cambia por tu usuario
+      POSTGRES_PASSWORD: password  # Cambia por tu contraseña
+      POSTGRES_DB: app_db           # Nombre de tu base de datos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend               # Aquí va tu carpeta de la app de FastAPI
+    container_name: fastapi_app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/app_db
+    ports:
+      - "8000:8000"
 
   frontend:
-    build: ./frontend
+    build: ./frontend              # Aquí va tu carpeta de Vite/Vue
+    container_name: vite_app
     ports:
-      - "3000:80"
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8000
 
-#  backend:
-#    build: ./backend
-#    ports:
-#      - "8000:8000"
-#    depends_on:
-#      - db
-#    environment:
-#      - DATABASE_URL=postgresql://postgres:postgres@db:5432/#mydatabase
-
-#  db:
-#    image: postgres:15
-#    restart: always
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#      POSTGRES_DB: mydatabase
-#    ports:
-#      - "5432:5432"
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/#data
-
-#volumes:
-#  postgres_data:
+volumes:
+  postgres_data:

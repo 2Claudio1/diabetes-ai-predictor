@@ -2,34 +2,40 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: postgres_db
     environment:
-      POSTGRES_USER: user           # Cambia por tu usuario
-      POSTGRES_PASSWORD: password  # Cambia por tu contraseña
-      POSTGRES_DB: app_db           # Nombre de tu base de datos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: unir1234
+      POSTGRES_DB: diabetes_predictor
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
   backend:
-    build: ./backend               # Aquí va tu carpeta de la app de FastAPI
+    build: ./backend
     container_name: fastapi_app
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://user:password@db:5432/app_db
+      DATABASE_URL: postgresql://postgres:unir1234@db:5432/diabetes_predictor
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app  # Monta código backend local para hot reload si usas Uvicorn con reload
 
   frontend:
-    build: ./frontend              # Aquí va tu carpeta de Vite/Vue
+    build: ./frontend
     container_name: vite_app
     ports:
       - "5173:5173"
     environment:
-      VITE_API_URL: http://localhost:8000
+      VITE_API_URL: http://backend:8000  # Usa el hostname docker del backend
+    volumes:
+      - ./frontend:/app   # Monta el código fuente para hot reload
+      - /app/node_modules # Ignorar node_modules del host para evitar conflictos
+    command: npm run dev -- --host 0.0.0.0  # Forzar modo desarrollo con hot reload
 
 volumes:
   postgres_data:

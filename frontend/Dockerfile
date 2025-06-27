@@ -1,16 +1,22 @@
 FROM node:20-alpine
 
-# Directorio de trabajo
+# Crear directorio de trabajo
 WORKDIR /app
 
-# Copiamos e instalamos dependencias
-COPY package.json ./
-COPY package-lock.json ./
+# Copiar solo archivos necesarios para instalación
+COPY package*.json ./
+
+# Instalar dependencias
 RUN npm install
 
-# Copiamos la app
+# Copiar toda la app (incluye src/, tsconfig.json, shims, etc.)
 COPY . .
 
-# Exponemos el puerto para Vite
+# Compilar
+RUN npm run build
+
+# Exponer puerto de desarrollo (opcional si vas a usar solo producción)
 EXPOSE 5173
+
+# Comando por defecto: modo desarrollo (puedes cambiar a producción si deseas)
 CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

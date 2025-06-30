@@ -1,0 +1,61 @@
+.form-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--surface-card);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.iframe-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.powerbi-frame {
+  width: 100%;
+  height: 550px;
+  max-width: 1120px;
+  border-radius: 8px;
+  border: none;
+}
+
+.info-text {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.info-text h3 {
+  color: #16a34a;
+  margin-bottom: 0.5rem;
+}
+
+.info-text ul {
+  padding-left: 1.2rem;
+  margin-top: 0.8rem;
+}
+
+.info-text li {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .powerbi-frame {
+    width: 300px;
+    height: 250px;
+  }
+
+  .info-text {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+}

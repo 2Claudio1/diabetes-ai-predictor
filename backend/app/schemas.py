@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
-class PrediccionDiabetesCreate(BaseModel):
+class PrediccionDiabetesBase(BaseModel):
     diabetes_bin: Optional[int] = None
     sexo: Optional[int] = None
     grupo_edad: Optional[int] = None
@@ -31,6 +31,15 @@ class PrediccionDiabetesCreate(BaseModel):
     pais: Optional[str] = None
     region: Optional[str] = None
     created_at: Optional[datetime] = None
+
+    class Config:
+        orm_mode = True
+
+class PrediccionDiabetesCreate(PrediccionDiabetesBase):
+    pass
+
+class PrediccionDiabetes(PrediccionDiabetesBase):
+    id: int  # Aquí agregas el id que es parte del modelo ORM
 
     class Config:
         orm_mode = True

@@ -47,3 +47,13 @@ a,
     padding: 0 2rem;
   }
 } */
+
+/* Establece el z-index alto para tooltips */
+.p-tooltip {
+  z-index: 1000;
+}
+
+/* Asegúrate que el body tenga posición relativa */
+body {
+  position: relative;
+}

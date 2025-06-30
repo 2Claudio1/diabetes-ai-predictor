@@ -6,7 +6,9 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
-//import Aura from '@primeuix/themes/aura';
+import Tooltip from 'primevue/tooltip'
+import 'primeicons/primeicons.css' // Para los íconos
+
 import Aura from '@primevue/themes/aura';
 import 'primeflex/primeflex.css';
 
@@ -20,6 +22,9 @@ app.use(PrimeVue, {
         preset: Aura
     }
 });
+
+// Registra la directiva globalmente
+app.directive('tooltip', Tooltip)
 
 
 

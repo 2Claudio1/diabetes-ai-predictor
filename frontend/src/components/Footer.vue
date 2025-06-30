@@ -4,7 +4,7 @@ const currentYear = new Date().getFullYear()
 
 <template>
     <footer class="site-footer">
-        <p>© 2025 Sistema de Análisis de Diabetes - Creado por AAAAAAAAAAAAAAA</p>
+        <p>© 2025 Sistema de Análisis de Diabetes</p>
     </footer>
 </template>
 

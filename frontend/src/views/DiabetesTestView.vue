@@ -18,7 +18,7 @@ const form = ref({
   grupo_edad: null,
   grupo_racial: null,
   nivel_educativo: null,
-  categoria_ingresos: null,
+  ingresos_grupo: null,
   altura: null,
   peso: null,
   presion_alta: null,
@@ -136,7 +136,7 @@ const checkForm = async () => {
         <br>Los resultados son solo orientativos y no sustituyen diagnóstico médico.
       </p>
     </div>
-    <form @submit.prevent="checkForm">
+    <form class="mb-4" @submit.prevent="checkForm">
       <!-- Datos Personales -->
       <div class="form-section">
         <h2 class="text-green-600 font-semibold text-xl mb-4">Datos Personales</h2>
@@ -150,7 +150,7 @@ const checkForm = async () => {
             <Dropdown v-model="form.grupo_edad" :options="ageOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Grupo racial / étnico" />
+            <InfoLabel label="Grupo racial o étnico" />
             <Dropdown v-model="form.grupo_racial" :options="raceOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
@@ -159,7 +159,7 @@ const checkForm = async () => {
           </div>
           <div class="field">
             <InfoLabel label="Nivel de ingresos" />
-            <Dropdown v-model="form.categoria_ingresos" :options="incomeOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
+            <Dropdown v-model="form.ingresos_grupo" :options="incomeOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
         </div>
       </div>
@@ -177,7 +177,7 @@ const checkForm = async () => {
             <InputNumber v-model="form.peso" mode="decimal" :min="30" :max="300" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="IMC (BMI)" tooltip="El IMC relaciona peso y altura. Un valor alto indica mayor riesgo de diabetes." />
+            <InfoLabel label="Índice de Masa Corporal (IMC)" tooltip="El IMC relaciona peso y altura. Un valor alto indica mayor riesgo de diabetes." />
             <InputNumber :value="calcularBMI()" disabled class="w-full" />
           </div>
         </div>
@@ -188,27 +188,27 @@ const checkForm = async () => {
         <h2 class="text-green-600 font-semibold text-xl mb-4">Historial Médico</h2>
         <div class="grid">
           <div class="field">
-            <InfoLabel label="Presión arterial alta" tooltip="¿Tiene presión alta diagnosticada?" />
+            <InfoLabel label="Diagnóstico de hipertensión arterial" tooltip="¿Tiene hipertensión arterial diagnosticada?" />
             <Dropdown v-model="form.presion_alta" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Colesterol alto" tooltip="¿Tiene colesterol alto diagnosticado?" />
+            <InfoLabel label="Diagnóstico de colesterol elevado" tooltip="¿Tiene colesterol elevado diagnosticado?" />
             <Dropdown v-model="form.colesterol_alto" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Historial de ACV" tooltip="¿Ha tenido un ACV?" />
+            <InfoLabel label="Antecedentes de accidente cerebrovascular (ACV)" tooltip="¿Ha tenido un ACV?" />
             <Dropdown v-model="form.historial_acv" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Historial cardíaco" tooltip="¿Tiene enfermedades del corazón?" />
+            <InfoLabel label="Antecedentes de enfermedad cardíaca" tooltip="¿Tiene enfermedades del corazón?" />
             <Dropdown v-model="form.historial_cardiaco" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Dificultad para caminar" tooltip="¿Tiene dificultad para caminar?" />
+            <InfoLabel label="Dificultad para caminar o subir escaleras" tooltip="¿Tiene dificultad para caminar?" />
             <Dropdown v-model="form.dificultad_caminar" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Fumó más de 100 cigarrillos" tooltip="¿Ha fumado más de 100 cigarrillos en su vida?" />
+            <InfoLabel label="Consumo de al menos 100 cigarrillos a lo largo de la vida" tooltip="¿Ha fumado más de 100 cigarrillos en su vida?" />
             <Dropdown v-model="form.fumo_100_cigs" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
         </div>
@@ -219,15 +219,15 @@ const checkForm = async () => {
         <h2 class="text-green-600 font-semibold text-xl mb-4">Hábitos y Estilo de Vida</h2>
         <div class="grid">
           <div class="field">
-            <InfoLabel label="Nivel de actividad física" tooltip="¿Hace ejercicio regularmente?" />
+            <InfoLabel label="Nivel de actividad física habitual" tooltip="¿Hace ejercicio regularmente?" />
             <Dropdown v-model="form.actividad_fisica" :options="activityOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="300+ min de actividad física semanal" tooltip="¿Hace al menos 300 min de ejercicio semanal?" />
+            <InfoLabel label="Actividad física ≥ 300 min/semana" tooltip="¿Hace al menos 300 min de ejercicio semanal?" />
             <Dropdown v-model="form.actividad_300min" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
-            <InfoLabel label="Fortalecimiento muscular" tooltip="¿Hace ejercicios de fuerza 2+ veces por semana?" />
+            <InfoLabel label="Fortalecimiento muscular ≥ 2 días/semana" tooltip="¿Hace ejercicios de fuerza 2+ veces por semana?" />
             <Dropdown v-model="form.actividad_muscular" :options="yesNoOptions" optionLabel="label" placeholder="Seleccione" class="w-full" />
           </div>
           <div class="field">
@@ -258,6 +258,8 @@ const checkForm = async () => {
             <InputNumber v-model="form.dias_mala_salud_mental" :min="0" :max="30" class="w-full" />
           </div>
         </div>
+      </div>
+      <div class="text-center">
         <Button label="Enviar Datos" class="submit-button" />
       </div>
     </form>
@@ -292,8 +294,8 @@ const checkForm = async () => {
 }
 
 .submit-button {
-  width: 100%;
+  width: auto;
   margin-top: 1.5rem;
-  padding: 1rem;
+  padding: 1rem 3rem;
 }
 </style>

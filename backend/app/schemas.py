@@ -8,7 +8,7 @@ class PrediccionDiabetesBase(BaseModel):
     grupo_edad: Optional[int] = None
     grupo_racial: Optional[int] = None
     nivel_educativo: Optional[int] = None
-    categoria_ingresos: Optional[int] = None
+    ingresos_grupo: Optional[int] = None
     altura: Optional[float] = None
     peso: Optional[float] = None
     presion_alta: Optional[int] = None

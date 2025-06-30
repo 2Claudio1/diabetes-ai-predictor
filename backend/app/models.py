@@ -10,7 +10,7 @@ class PrediccionDiabetes(Base):
     grupo_edad = Column(Integer, nullable=True)
     grupo_racial = Column(Integer, nullable=True)
     nivel_educativo = Column(Integer, nullable=True)
-    categoria_ingresos = Column(Integer, nullable=True)
+    ingresos_grupo = Column(Integer, nullable=True)
     altura = Column(Float, nullable=True)
     peso = Column(Float, nullable=True)
     presion_alta = Column(Integer, nullable=True)

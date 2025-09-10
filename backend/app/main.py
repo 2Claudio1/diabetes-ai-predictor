@@ -6,16 +6,24 @@ from .database import SessionLocal, init_db
 from . import models, schemas
 from datetime import datetime
 from typing import Optional
+import time
+import logging
+from .data_dummy import datos_demo
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
 # Prefijo y etiquetas para las rutas
 router = APIRouter(prefix="/api", tags=["PrediccionesDiabetes"])
 
-# Configuración de CORS: tu frontend local, puedes agregar más dominios si quieres
+# Configuración de CORS
 origins = [
     "http://localhost:5173",
-    # "*" # para todos, menos seguro
+    "http://localhost:8000",
+    # Puedes agregar más dominios permitidos aquí
 ]
 
 app.add_middleware(
@@ -34,27 +42,35 @@ def get_db():
     finally:
         db.close()
 
-# Evento que se ejecuta al iniciar el servidor
+# Evento que se ejecuta al iniciar el servidor con reintentos para conectar a la DB
 @app.on_event("startup")
-def startup_event():
-    # Inicializa la base de datos (crea tablas)
-    init_db()
-    db = SessionLocal()
-    try:
-        # Si la tabla está vacía, insertar datos demo
-        if db.query(models.PrediccionDiabetes).count() == 0:
-            datos_demo = [
-                # Tus datos demo aquí, tal cual los tienes
-                # (omito para no repetir)
-            ]
-            for item in datos_demo:
-                registro = models.PrediccionDiabetes(**item)
-                db.add(registro)
-            db.commit()
-    finally:
-        db.close()
+async def startup_event():
+    max_attempts = 5
+    for attempt in range(max_attempts):
+        try:
+            logger.info(f"Intentando conectar a la base de datos (intento {attempt + 1}/{max_attempts})")
+            init_db()
+            db = SessionLocal()
+            
+            # Insertar datos demo si la tabla está vacía
+            if db.query(models.PrediccionDiabetes).count() == 0:
+                for item in datos_demo:
+                    registro = models.PrediccionDiabetes(**item)
+                    db.add(registro)
+                db.commit()
+                logger.info("Datos demo insertados correctamente")
+            break
+        except Exception as e:
+            logger.error(f"Error en intento {attempt + 1}: {str(e)}")
+            if attempt == max_attempts - 1:
+                logger.error("No se pudo conectar a la base de datos después de varios intentos")
+                raise
+            time.sleep(5)
+        finally:
+            db.close()
 
-# POST: Guardar nuevo registro
+# Rutas de la API
+
 @router.post("/guardar-datos/", response_model=schemas.PrediccionDiabetes)
 def guardar_datos(datos: schemas.PrediccionDiabetesCreate, db: Session = Depends(get_db)):
     nuevo = models.PrediccionDiabetes(**datos.dict())
@@ -63,12 +79,10 @@ def guardar_datos(datos: schemas.PrediccionDiabetesCreate, db: Session = Depends
     db.refresh(nuevo)
     return nuevo
 
-# GET: Obtener todos los registros
 @router.get("/todos-datos/", response_model=list[schemas.PrediccionDiabetes])
 def obtener_todos(db: Session = Depends(get_db)):
     return db.query(models.PrediccionDiabetes).all()
 
-# GET: Obtener registro por ID
 @router.get("/obtener-por-id/{id}", response_model=schemas.PrediccionDiabetes)
 def obtener_por_id(id: int, db: Session = Depends(get_db)):
     registro = db.query(models.PrediccionDiabetes).filter(models.PrediccionDiabetes.id == id).first()
@@ -76,12 +90,10 @@ def obtener_por_id(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Registro no encontrado.")
     return registro
 
-# GET: Filtrar registros por país
 @router.get("/filtrar-por-pais/{pais}", response_model=list[schemas.PrediccionDiabetes])
 def filtrar_por_pais(pais: str, db: Session = Depends(get_db)):
     return db.query(models.PrediccionDiabetes).filter(models.PrediccionDiabetes.pais == pais).all()
 
-# DELETE: Eliminar registro por ID
 @router.delete("/eliminar-por-id/{id}")
 def eliminar_por_id(id: int, db: Session = Depends(get_db)):
     registro = db.query(models.PrediccionDiabetes).filter(models.PrediccionDiabetes.id == id).first()
@@ -91,7 +103,6 @@ def eliminar_por_id(id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensaje": f"Registro con id {id} eliminado correctamente"}
 
-# GET: Promedio de diabetes_bin por país
 @router.get("/promedio-diabetes-por-pais/")
 def promedio_diabetes_por_pais(db: Session = Depends(get_db)):
     resultados = (
@@ -112,7 +123,6 @@ def promedio_diabetes_por_pais(db: Session = Depends(get_db)):
         for r in resultados
     ]
 
-# GET: Promedio de diabetes_bin agrupado por año, mes y continente. Filtro opcional por continente.
 @router.get("/promedio-diabetes-tiempo/")
 def promedio_diabetes_tiempo(
     continente: Optional[str] = None,
@@ -132,7 +142,6 @@ def promedio_diabetes_tiempo(
         query = query.filter(func.extract('year', models.PrediccionDiabetes.created_at) == anio)
     query = query.group_by('anio', 'mes', models.PrediccionDiabetes.continente).order_by('anio', 'mes')
     resultados = query.all()
-    # Resto igual
     return [
         {
             "anio": int(r.anio),

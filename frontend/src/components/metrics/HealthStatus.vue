@@ -16,10 +16,12 @@
         <p>
           El estado de salud autopercibido y las experiencias recientes de malestar físico o mental son variables importantes para comprender la calidad de vida y posibles factores asociados al riesgo de diabetes. En esta sección se incluyen:
         </p>
-        <ul>
-          <li><b>Salud general autopercibida:</b> La percepción personal de la salud está vinculada a factores físicos y emocionales que pueden influir en el riesgo de enfermedades crónicas.</li>
-          <li><b>Días con mala salud física (último mes):</b> Una mayor cantidad de días con malestar físico puede estar asociada a patologías subyacentes, incluyendo riesgo de diabetes.</li>
-          <li><b>Días con mala salud mental (último mes):</b> El estrés, la ansiedad y la depresión se han relacionado con una mayor probabilidad de alteraciones metabólicas y riesgo de diabetes.</li>
+        <ul class="my-4">
+          <li><b>Nivel de actividad física habitual:</b> La práctica regular de ejercicio reduce el riesgo de resistencia a la insulina y de aparición de diabetes.</li>
+          <li><b>Actividad física ≥ 300 min/semana:</b> Alcanzar este nivel semanal se asocia con una disminución significativa del riesgo metabólico.</li>
+          <li><b>Fortalecimiento muscular ≥ 2 días/semana:</b> Las actividades de fuerza mejoran la sensibilidad a la insulina y el control glucémico.</li>
+          <li><b>Frecuencia de consumo de frutas:</b> Una dieta rica en frutas aporta fibra y micronutrientes protectores frente a enfermedades metabólicas.</li>
+          <li><b>Frecuencia de consumo de verduras:</b> Las verduras contribuyen a mantener un peso saludable y a prevenir complicaciones metabólicas.</li>
         </ul>
         <p>
           Analizar estas variables ayuda a valorar la dimensión subjetiva de la salud, un aspecto relevante para la predicción y prevención de la diabetes tipo 2.

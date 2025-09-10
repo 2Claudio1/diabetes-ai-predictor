@@ -16,12 +16,12 @@
           <p>
             El análisis de datos personales permite identificar patrones demográficos asociados al riesgo de diabetes tipo 2. A continuación, se describen las variables incluidas en esta sección:
           </p>
-          <ul>
+          <ul class="my-4">
             <li><b>Sexo:</b> Se analiza la prevalencia de la diabetes entre hombres y mujeres, dado que algunos estudios muestran diferencias en la incidencia y factores de riesgo según género.</li>
             <li><b>Grupo de edad:</b> El riesgo de diabetes aumenta con la edad. Por ello, se agrupan rangos etarios para examinar en qué franjas se concentran más casos.</li>
-            <li><b>Grupo racial o étnico:</b> Determinados grupos étnicos presentan mayor predisposición genética o condiciones socioeconómicas que incrementan el riesgo de diabetes tipo 2.</li>
             <li><b>Nivel educativo:</b> El nivel de educación puede influir en el acceso a información sobre salud y en hábitos preventivos, siendo un factor indirecto en el riesgo de desarrollar diabetes.</li>
             <li><b>Nivel de ingresos:</b> Los ingresos económicos están relacionados con el acceso a cuidados médicos, alimentación saludable y estilos de vida, lo que puede impactar en la prevalencia de diabetes.</li>
+            <li><b>Grupo racial o étnico:</b> Determinados grupos étnicos presentan mayor predisposición genética o condiciones socioeconómicas que incrementan el riesgo de diabetes tipo 2.</li>
             <li><b>Índice de Masa Corporal (IMC):</b> Es una medida que relaciona peso y altura. Un IMC elevado está asociado a un mayor riesgo de desarrollar diabetes tipo 2.</li>
           </ul>
           <p>

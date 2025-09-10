@@ -10,7 +10,7 @@ const selectedPage = ref<number>(1);
 const tabs = [
   { 
     id: 1, 
-    name: 'Datos personales',
+    name: 'Distribución Demográfica',
     title: 'Distribución Demográfica',
     subtitle: 'Edad, género y grupo étnico en la población de estudio'
   },

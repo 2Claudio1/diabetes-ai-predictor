@@ -16,12 +16,10 @@
         <p>
           Los hábitos de vida son factores clave y modificables que influyen de manera significativa en la prevención o desarrollo de la diabetes tipo 2. En esta sección se consideran las siguientes variables:
         </p>
-        <ul>
-          <li><b>Nivel de actividad física habitual:</b> La práctica regular de ejercicio reduce el riesgo de resistencia a la insulina y de aparición de diabetes.</li>
-          <li><b>Actividad física ≥ 300 min/semana:</b> Alcanzar este nivel semanal se asocia con una disminución significativa del riesgo metabólico.</li>
-          <li><b>Fortalecimiento muscular ≥ 2 días/semana:</b> Las actividades de fuerza mejoran la sensibilidad a la insulina y el control glucémico.</li>
-          <li><b>Frecuencia de consumo de frutas:</b> Una dieta rica en frutas aporta fibra y micronutrientes protectores frente a enfermedades metabólicas.</li>
-          <li><b>Frecuencia de consumo de verduras:</b> Las verduras contribuyen a mantener un peso saludable y a prevenir complicaciones metabólicas.</li>
+        <ul class="my-4">
+          <li><b>Salud general autopercibida:</b> La percepción personal de la salud está vinculada a factores físicos y emocionales que pueden influir en el riesgo de enfermedades crónicas.</li>
+          <li><b>Días con mala salud física (último mes):</b> Una mayor cantidad de días con malestar físico puede estar asociada a patologías subyacentes, incluyendo riesgo de diabetes.</li>
+          <li><b>Días con mala salud mental (último mes):</b> El estrés, la ansiedad y la depresión se han relacionado con una mayor probabilidad de alteraciones metabólicas y riesgo de diabetes.</li>
         </ul>
         <p>
           Estos aspectos son fundamentales para entender los factores de riesgo modificables implicados en la diabetes tipo 2.

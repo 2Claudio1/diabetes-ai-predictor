@@ -12,6 +12,8 @@ import 'primeicons/primeicons.css' // Para los íconos
 import Aura from '@primevue/themes/aura';
 import 'primeflex/primeflex.css';
 
+import "flag-icons/css/flag-icons.min.css";
+
 const app = createApp(App)
 
 app.use(createPinia())

@@ -18,7 +18,7 @@ interface DiabetesForm {
   nivel_educativo: number;
   ingresos_grupo: number;
   pais: string;
-  bmi?: number;
+  bmi?: number; // Make optional
   presion_alta: number;
   colesterol_alto: number;
   historial_acv: number;
@@ -26,14 +26,14 @@ interface DiabetesForm {
   dificultad_caminar: number;
   fumo_100_cigs: number;
   actividad_fisica: number;
-  actividad_300min: number;
+  actividad_300_min : number;
   actividad_muscular: number;
   frecuencia_frutas: number;
   frecuencia_verduras: number;
   salud_general: number;
   dias_mala_salud_fisica: number;
   dias_mala_salud_mental: number;
-  continente: string;
+  continente?: string; // Make optional
 }
 
 const { handleSubmit } = useForm();
@@ -43,27 +43,27 @@ const prediction = ref<number | null>(null);
 const formSubmitted = ref(false);
 
 const { value: sexo, errorMessage: sexoError } = useField<number>('sexo', yup.number().required('Campo requerido'));
-const { value: grupoEdad, errorMessage: grupoEdadError } = useField<number>('grupoEdad', yup.number().required('Campo requerido'));
-const { value: grupoRacial, errorMessage: grupoRacialError } = useField<number>('grupoRacial', yup.number().required('Campo requerido'));
-const { value: nivelEducativo, errorMessage: nivelEducativoError } = useField<number>('nivelEducativo', yup.number().required('Campo requerido'));
-const { value: ingresosGrupo, errorMessage: ingresosGrupoError } = useField<number>('ingresosGrupo', yup.number().required('Campo requerido'));
+const { value: grupo_edad, errorMessage: grupo_edadError } = useField<number>('grupo_edad', yup.number().required('Campo requerido'));
+const { value: grupo_racial, errorMessage: grupo_racialError } = useField<number>('grupo_racial', yup.number().required('Campo requerido'));
+const { value: nivel_educativo, errorMessage: nivel_educativoError } = useField<number>('nivel_educativo', yup.number().required('Campo requerido'));
+const { value: ingresos_grupo, errorMessage: ingresos_grupoError } = useField<number>('ingresos_grupo', yup.number().required('Campo requerido'));
 const { value: pais, errorMessage: paisError } = useField<string>('pais', yup.string().required('Campo requerido'));
 const { value: altura, errorMessage: alturaError } = useField<number>('altura', yup.number().required('Campo requerido').min(100, 'Mínimo 100 cm').max(250, 'Máximo 250 cm'));
 const { value: peso, errorMessage: pesoError } = useField<number>('peso', yup.number().required('Campo requerido').min(30, 'Mínimo 30 kg').max(300, 'Máximo 300 kg'));
-const { value: presionAlta, errorMessage: presionAltaError } = useField<number>('presionAlta', yup.number().required('Campo requerido'));
-const { value: colesterolAlto, errorMessage: colesterolAltoError } = useField<number>('colesterolAlto', yup.number().required('Campo requerido'));
-const { value: historialACV, errorMessage: historialACVError } = useField<number>('historialACV', yup.number().required('Campo requerido'));
-const { value: historialCardiaco, errorMessage: historialCardiacoError } = useField<number>('historialCardiaco', yup.number().required('Campo requerido'));
-const { value: dificultadCaminar, errorMessage: dificultadCaminarError } = useField<number>('dificultadCaminar', yup.number().required('Campo requerido'));
-const { value: fumo100Cigs, errorMessage: fumo100CigsError } = useField<number>('fumo100Cigs', yup.number().required('Campo requerido'));
-const { value: actividadFisica, errorMessage: actividadFisicaError } = useField<number>('actividadFisica', yup.number().required('Campo requerido'));
-const { value: actividad300min, errorMessage: actividad300minError } = useField<number>('actividad300min', yup.number().required('Campo requerido'));
-const { value: actividadMuscular, errorMessage: actividadMuscularError } = useField<number>('actividadMuscular', yup.number().required('Campo requerido'));
-const { value: frecuenciaFrutas, errorMessage: frecuenciaFrutasError } = useField<number>('frecuenciaFrutas', yup.number().required('Campo requerido'));
-const { value: frecuenciaVerduras, errorMessage: frecuenciaVerdurasError } = useField<number>('frecuenciaVerduras', yup.number().required('Campo requerido'));
-const { value: saludGeneral, errorMessage: saludGeneralError } = useField<number>('saludGeneral', yup.number().required('Campo requerido'));
-const { value: diasMalaSaludFisica, errorMessage: diasMalaSaludFisicaError } = useField<number>('diasMalaSaludFisica', yup.number().required('Campo requerido').min(0, 'Mínimo 0 días').max(30, 'Máximo 30 días'));
-const { value: diasMalaSaludMental, errorMessage: diasMalaSaludMentalError } = useField<number>('diasMalaSaludMental', yup.number().required('Campo requerido').min(0, 'Mínimo 0 días').max(30, 'Máximo 30 días'));
+const { value: presion_alta, errorMessage: presion_altaError } = useField<number>('presion_alta', yup.number().required('Campo requerido'));
+const { value: colesterol_alto, errorMessage: colesterol_altoError } = useField<number>('colesterol_alto', yup.number().required('Campo requerido'));
+const { value: historial_acv, errorMessage: historial_acvError } = useField<number>('historial_acv', yup.number().required('Campo requerido'));
+const { value: historial_cardiaco, errorMessage: historial_cardiacoError } = useField<number>('historial_cardiaco', yup.number().required('Campo requerido'));
+const { value: dificultad_caminar, errorMessage: dificultad_caminarError } = useField<number>('dificultad_caminar', yup.number().required('Campo requerido'));
+const { value: fumo_100_cigs, errorMessage: fumo_100_cigsError } = useField<number>('fumo_100_cigs', yup.number().required('Campo requerido'));
+const { value: actividad_fisica, errorMessage: actividad_fisicaError } = useField<number>('actividad_fisica', yup.number().required('Campo requerido'));
+const { value: actividad_300_min, errorMessage: actividad_300_minError } = useField<number>('actividad_300_min', yup.number().required('Campo requerido'));
+const { value: actividad_muscular, errorMessage: actividad_muscularError } = useField<number>('actividad_muscular', yup.number().required('Campo requerido'));
+const { value: frecuencia_frutas, errorMessage: frecuencia_frutasError } = useField<number>('frecuencia_frutas', yup.number().required('Campo requerido'));
+const { value: frecuencia_verduras, errorMessage: frecuencia_verdurasError } = useField<number>('frecuencia_verduras', yup.number().required('Campo requerido'));
+const { value: salud_general, errorMessage: salud_generalError } = useField<number>('salud_general', yup.number().required('Campo requerido'));
+const { value: dias_mala_salud_fisica, errorMessage: dias_mala_salud_fisicaError } = useField<number>('dias_mala_salud_fisica', yup.number().required('Campo requerido').min(0, 'Mínimo 0 días').max(30, 'Máximo 30 días'));
+const { value: dias_mala_salud_mental, errorMessage: dias_mala_salud_mentalError } = useField<number>('dias_mala_salud_mental', yup.number().required('Campo requerido').min(0, 'Mínimo 0 días').max(30, 'Máximo 30 días'));
 
 const bmi = computed(() => {
   const alturaNum = Number(altura.value);
@@ -148,9 +148,13 @@ const checkForm = handleSubmit(async (values) => {
   error.value = null;
 
   try {
+    // Cast values to DiabetesForm
+    const formValues = values as DiabetesForm;
+    
     const formData: DiabetesForm = {
-      ...values,
+      ...formValues,
       bmi: bmi.value,
+      continente: 'Europa'
     };
 
     const response = await fetch('http://localhost:8000/api/guardar-datos/', {
@@ -207,27 +211,27 @@ const checkForm = handleSubmit(async (values) => {
           </div>
           <div class="field">
             <InfoLabel label="Grupo de edad*" required />
-            <Dropdown v-model="grupoEdad" :options="ageOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="grupo_edad" :options="ageOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="grupoEdadError">{{ grupoEdadError }}</small>
+            <small class="error-message" v-if="grupo_edadError">{{ grupo_edadError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Grupo racial o étnico*" required />
-            <Dropdown v-model="grupoRacial" :options="raceOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="grupo_racial" :options="raceOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="grupoRacialError">{{ grupoRacialError }}</small>
+            <small class="error-message" v-if="grupo_racialError">{{ grupo_racialError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Nivel educativo*" required />
-            <Dropdown v-model="nivelEducativo" :options="educationOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="nivel_educativo" :options="educationOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="nivelEducativoError">{{ nivelEducativoError }}</small>
+            <small class="error-message" v-if="nivel_educativoError">{{ nivel_educativoError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Nivel de ingresos*" required />
-            <Dropdown v-model="ingresosGrupo" :options="incomeOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="ingresos_grupo" :options="incomeOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="ingresosGrupoError">{{ ingresosGrupoError }}</small>
+            <small class="error-message" v-if="ingresos_grupoError">{{ ingresos_grupoError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="País*" required />
@@ -281,41 +285,41 @@ const checkForm = handleSubmit(async (values) => {
         <div class="grid">
           <div class="field">
             <InfoLabel label="Hipertensión arterial*" tooltip="¿Tiene hipertensión arterial diagnosticada?" required />
-            <Dropdown v-model="presionAlta" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="presion_alta" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="presionAltaError">{{ presionAltaError }}</small>
+            <small class="error-message" v-if="presion_altaError">{{ presion_altaError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Colesterol elevado*" tooltip="¿Tiene colesterol elevado diagnosticado?" required />
-            <Dropdown v-model="colesterolAlto" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="colesterol_alto" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="colesterolAltoError">{{ colesterolAltoError }}</small>
+            <small class="error-message" v-if="colesterol_altoError">{{ colesterol_altoError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Antecedentes de ACV*" tooltip="¿Ha tenido un accidente cerebrovascular?" required />
-            <Dropdown v-model="historialACV" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="historial_acv" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="historialACVError">{{ historialACVError }}</small>
+            <small class="error-message" v-if="historial_acvError">{{ historial_acvError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Enfermedad cardíaca*" tooltip="¿Tiene enfermedades del corazón?" required />
-            <Dropdown v-model="historialCardiaco" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="historial_cardiaco" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="historialCardiacoError">{{ historialCardiacoError }}</small>
+            <small class="error-message" v-if="historial_cardiacoError">{{ historial_cardiacoError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Dificultad para caminar*" tooltip="¿Tiene dificultad para caminar o subir escaleras?"
               required />
-            <Dropdown v-model="dificultadCaminar" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="dificultad_caminar" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="dificultadCaminarError">{{ dificultadCaminarError }}</small>
+            <small class="error-message" v-if="dificultad_caminarError">{{ dificultad_caminarError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Fumador (100+ cigarrillos)*" tooltip="¿Ha fumado más de 100 cigarrillos en su vida?"
               required />
-            <Dropdown v-model="fumo100Cigs" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="fumo_100_cigs" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="fumo100CigsError">{{ fumo100CigsError }}</small>
+            <small class="error-message" v-if="fumo_100_cigsError">{{ fumo_100_cigsError }}</small>
           </div>
         </div>
       </div>
@@ -326,35 +330,35 @@ const checkForm = handleSubmit(async (values) => {
         <div class="grid">
           <div class="field">
             <InfoLabel label="Actividad física habitual*" tooltip="¿Hace ejercicio regularmente?" required />
-            <Dropdown v-model="actividadFisica" :options="activityOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="actividad_fisica" :options="activityOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="actividadFisicaError">{{ actividadFisicaError }}</small>
+            <small class="error-message" v-if="actividad_fisicaError">{{ actividad_fisicaError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Ejercicio ≥300 min/semana*" tooltip="¿Hace al menos 300 min de ejercicio semanal?"
               required />
-            <Dropdown v-model="actividad300min" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="actividad_300_min" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="actividad300minError">{{ actividad300minError }}</small>
+            <small class="error-message" v-if="actividad_300_minError">{{ actividad_300_minError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Fortalecimiento muscular*" tooltip="¿Hace ejercicios de fuerza 2+ veces por semana?"
               required />
-            <Dropdown v-model="actividadMuscular" :options="yesNoOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="actividad_muscular" :options="yesNoOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="actividadMuscularError">{{ actividadMuscularError }}</small>
+            <small class="error-message" v-if="actividad_muscularError">{{ actividad_muscularError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Consumo de frutas*" tooltip="¿Cuántas veces come frutas por semana?" required />
-            <Dropdown v-model="frecuenciaFrutas" :options="frequencyOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="frecuencia_frutas" :options="frequencyOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="frecuenciaFrutasError">{{ frecuenciaFrutasError }}</small>
+            <small class="error-message" v-if="frecuencia_frutasError">{{ frecuencia_frutasError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Consumo de verduras*" tooltip="¿Cuántas veces come verduras por semana?" required />
-            <Dropdown v-model="frecuenciaVerduras" :options="frequencyOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="frecuencia_verduras" :options="frequencyOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="frecuenciaVerdurasError">{{ frecuenciaVerdurasError }}</small>
+            <small class="error-message" v-if="frecuencia_verdurasError">{{ frecuencia_verdurasError }}</small>
           </div>
         </div>
       </div>
@@ -365,21 +369,21 @@ const checkForm = handleSubmit(async (values) => {
         <div class="grid">
           <div class="field">
             <InfoLabel label="Salud general*" tooltip="¿Cómo evalúa su salud en general?" required />
-            <Dropdown v-model="saludGeneral" :options="healthOptions" optionLabel="label" optionValue="value"
+            <Dropdown v-model="salud_general" :options="healthOptions" optionLabel="label" optionValue="value"
               placeholder="Seleccione" class="w-full" />
-            <small class="error-message" v-if="saludGeneralError">{{ saludGeneralError }}</small>
+            <small class="error-message" v-if="salud_generalError">{{ salud_generalError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Días con mala salud física*"
               tooltip="¿Cuántos días tuvo malestar físico en el último mes?" required />
-            <InputNumber v-model="diasMalaSaludFisica" :min="0" :max="30" class="w-full" />
-            <small class="error-message" v-if="diasMalaSaludFisicaError">{{ diasMalaSaludFisicaError }}</small>
+            <InputNumber v-model="dias_mala_salud_fisica" :min="0" :max="30" class="w-full" />
+            <small class="error-message" v-if="dias_mala_salud_fisicaError">{{ dias_mala_salud_fisicaError }}</small>
           </div>
           <div class="field">
             <InfoLabel label="Días con mala salud mental*"
               tooltip="¿Cuántos días tuvo malestar mental en el último mes?" required />
-            <InputNumber v-model="diasMalaSaludMental" :min="0" :max="30" class="w-full" />
-            <small class="error-message" v-if="diasMalaSaludMentalError">{{ diasMalaSaludMentalError }}</small>
+            <InputNumber v-model="dias_mala_salud_mental" :min="0" :max="30" class="w-full" />
+            <small class="error-message" v-if="dias_mala_salud_mentalError">{{ dias_mala_salud_mentalError }}</small>
           </div>
         </div>
       </div>

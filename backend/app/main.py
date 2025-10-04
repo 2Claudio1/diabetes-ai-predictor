@@ -10,6 +10,9 @@ import time
 import logging
 from .data_dummy import datos_demo
 
+# Para testes
+import random
+
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -73,10 +76,27 @@ async def startup_event():
 
 @router.post("/guardar-datos/", response_model=schemas.PrediccionDiabetes)
 def guardar_datos(datos: schemas.PrediccionDiabetesCreate, db: Session = Depends(get_db)):
-    nuevo = models.PrediccionDiabetes(**datos.dict())
+    # Convertir los datos a diccionario
+    datos_dict = datos.dict()
+    
+    # Calcular predicción (20% probabilidad de diabetes = 1)
+    prediccion = 1 if random.random() < 0.2 else 0
+    
+    # Agregar la predicción al diccionario
+    datos_dict['diabetes_bin'] = prediccion
+    
+    # Crear el objeto de la base de datos
+    nuevo = models.PrediccionDiabetes(**datos_dict)
+    
+    print('Datos recibidos:')
+    print(datos_dict)
+    print(f'Predicción calculada: {prediccion}')
+    
     db.add(nuevo)
     db.commit()
     db.refresh(nuevo)
+    
+    # También devolver la predicción en la respuesta
     return nuevo
 
 @router.get("/todos-datos/", response_model=list[schemas.PrediccionDiabetes])

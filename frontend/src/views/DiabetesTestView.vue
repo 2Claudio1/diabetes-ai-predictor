@@ -167,7 +167,7 @@ const checkForm = handleSubmit(async (values) => {
 
     const result = await response.json();
     console.log('Datos guardados:', result);
-    prediction.value = result.prediction;
+    prediction.value = result;
     formSubmitted.value = true;
 
   } catch (err) {

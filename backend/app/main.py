@@ -10,6 +10,10 @@ import time
 import logging
 from .data_dummy import datos_demo
 
+import joblib
+import numpy as np
+from pathlib import Path
+
 # Para testes
 import random
 
@@ -44,6 +48,16 @@ def get_db():
         yield db
     finally:
         db.close()
+        
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "models" / "xgb_model.pkl"
+SCALER_PATH = BASE_DIR / "models" / "minmaxscaler.pkl"
+
+# Cargar MinMaxScaler
+scaler = joblib.load(SCALER_PATH)
+
+# Cargar modelo XGBoost entrenado
+modelo_xgb = joblib.load(MODEL_PATH)
 
 # Evento que se ejecuta al iniciar el servidor con reintentos para conectar a la DB
 @app.on_event("startup")
@@ -74,30 +88,55 @@ async def startup_event():
 
 # Rutas de la API
 
-@router.post("/guardar-datos/", response_model=schemas.PrediccionDiabetes)
+#@router.post("/guardar-datos/", response_model=schemas.PrediccionDiabetes)
+@router.post("/guardar-datos/", response_model=int)
 def guardar_datos(datos: schemas.PrediccionDiabetesCreate, db: Session = Depends(get_db)):
     # Convertir los datos a diccionario
     datos_dict = datos.dict()
+
+    # --- Crear el array de entrada en el mismo orden que el modelo fue entrenado ---
+    features = np.array([[
+        datos_dict["presion_alta"],
+        datos_dict["colesterol_alto"],
+        datos_dict["bmi"],
+        datos_dict["fumo_100_cigs"],
+        datos_dict["historial_acv"],
+        datos_dict["historial_cardiaco"],
+        datos_dict["actividad_fisica"],
+        datos_dict["salud_general"],
+        datos_dict["dias_mala_salud_fisica"],
+        datos_dict["dias_mala_salud_mental"],
+        datos_dict["dificultad_caminar"],
+        datos_dict["sexo"],
+        datos_dict["grupo_edad"],
+        datos_dict["nivel_educativo"],
+        datos_dict["grupo_racial"],
+        datos_dict["actividad_300_min"],
+        datos_dict["actividad_muscular"],
+        datos_dict["frecuencia_frutas"],
+        datos_dict["frecuencia_verduras"],
+        datos_dict["ingresos_grupo"]
+    ]])
+
+    # Escalar los datos con MinMaxScaler
+    features_scaled = scaler.transform(features)
     
-    # Calcular predicción (20% probabilidad de diabetes = 1)
-    prediccion = 1 if random.random() < 0.2 else 0
-    
-    # Agregar la predicción al diccionario
+    # Hacer la predicción
+    try:
+        prediccion = int(modelo_xgb.predict(features_scaled)[0])
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al hacer la predicción: {str(e)}")
+
+    # Guardar predicción en el diccionario y en la DB
     datos_dict['diabetes_bin'] = prediccion
-    
-    # Crear el objeto de la base de datos
     nuevo = models.PrediccionDiabetes(**datos_dict)
-    
-    print('Datos recibidos:')
-    print(datos_dict)
-    print(f'Predicción calculada: {prediccion}')
-    
+
     db.add(nuevo)
     db.commit()
     db.refresh(nuevo)
-    
-    # También devolver la predicción en la respuesta
-    return nuevo
+
+    return prediccion
+
 
 @router.get("/todos-datos/", response_model=list[schemas.PrediccionDiabetes])
 def obtener_todos(db: Session = Depends(get_db)):
